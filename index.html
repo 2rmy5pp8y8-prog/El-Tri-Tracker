@@ -43,11 +43,11 @@ document.getElementById('profile-view').style.display='block';
 window.scrollTo({top:0,behavior:'smooth'});
 });
 }
-</script>
+  
 fetch('players.csv')
 .then(res => res.text())
 .then(data => {
-  const rows = data.split('\\n').slice(1);
+  const rows = data.split('\n').slice(1);
 
   rows.forEach(row => {
     const [name, position, club, status, callup] = row.split(',');
@@ -66,5 +66,6 @@ fetch('players.csv')
     document.getElementById('player-table').appendChild(tr);
   });
 });
+</script>
 </body>
 </html>
