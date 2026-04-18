@@ -24,29 +24,8 @@ td {cursor:pointer;}
 
 <div class="section">
 <h2>Call-Up Board</h2>
-<table>
+<table id="player-table">
 <tr><th>Player</th><th>Club</th><th>Call-Up %</th></tr>
-
-<tr onclick="loadProfile('profiles/Santiago_Gimenez.html')">
-<td>Santiago Gimenez</td><td>Feyenoord</td><td>95%</td>
-</tr>
-
-<tr onclick="loadProfile('profiles/Edson_Alvarez.html')">
-<td>Edson Alvarez</td><td>West Ham</td><td>95%</td>
-</tr>
-
-<tr onclick="loadProfile('profiles/Julian_Quinones.html')">
-<td>Julian Quinones</td><td>Club America</td><td>82%</td>
-</tr>
-
-<tr onclick="loadProfile('profiles/Obed_Vargas.html')">
-<td>Obed Vargas</td><td>Seattle Sounders</td><td>65%</td>
-</tr>
-
-<tr onclick="loadProfile('profiles/Gilberto_Mora.html')">
-<td>Gilberto Mora</td><td>Tijuana</td><td>50%</td>
-</tr>
-
 </table>
 </div>
 
@@ -65,6 +44,27 @@ window.scrollTo({top:0,behavior:'smooth'});
 });
 }
 </script>
+fetch('players.csv')
+.then(res => res.text())
+.then(data => {
+  const rows = data.split('\\n').slice(1);
 
+  rows.forEach(row => {
+    const [name, position, club, status, callup] = row.split(',');
+
+    if (!name) return;
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${name}</td>
+      <td>${club}</td>
+      <td>${callup}%</td>
+    `;
+
+    tr.onclick = () => loadProfile(`profiles/${name.replace(/ /g,'_')}.html`);
+
+    document.getElementById('player-table').appendChild(tr);
+  });
+});
 </body>
 </html>
